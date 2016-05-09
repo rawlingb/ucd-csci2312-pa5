@@ -102,6 +102,125 @@ namespace CS2312 {
 
     };
 
+    template<typename T>
+    fixed_array<T>::const_iterator::const_iterator(fixed_array::const_iterator::pointer ptr) : __ptr(ptr) { }
+
+    template<typename T>
+    typename fixed_array<T>::const_iterator::self_type fixed_array<T>::const_iterator::operator++() {
+        return ++__ptr;
+    }
+
+    template<typename T>
+    typename fixed_array<T>::const_iterator::self_type fixed_array<T>::const_iterator::operator++(int junk) {
+        return __ptr++;
+    }
+
+    template<typename T>
+    const typename fixed_array<T>::const_iterator::value_type &fixed_array<T>::const_iterator::operator*() const {
+        return *__ptr;
+    }
+
+    template<typename T>
+    const typename fixed_array<T>::const_iterator::value_type *fixed_array<T>::const_iterator::operator->() const {
+        return __ptr;
+    }
+
+    template<typename T>
+    bool fixed_array<T>::const_iterator::operator==(const self_type &rhs) const {
+        return __ptr == rhs.__ptr;
+    }
+
+    template<typename T>
+    bool fixed_array<T>::const_iterator::operator!=(const self_type &rhs) const {
+        return __ptr != rhs.__ptr;
+    }
+
+    template<typename T>
+    fixed_array<T>::iterator::iterator(fixed_array::iterator::pointer ptr) : __ptr(ptr) { }
+
+    template<typename T>
+    typename fixed_array<T>::iterator::self_type fixed_array<T>::iterator::operator++() {
+        return ++__ptr;
+    }
+
+    template<typename T>
+    typename fixed_array<T>::iterator::self_type fixed_array<T>::iterator::operator++(int junk) {
+        return __ptr++;
+    }
+
+    template<typename T>
+    typename fixed_array<T>::iterator::reference fixed_array<T>::iterator::operator*() {
+        return *__ptr;
+    }
+
+    template<typename T>
+    typename fixed_array<T>::iterator::pointer fixed_array<T>::iterator::operator->() {
+        return __ptr;
+    }
+
+    template<typename T>
+    bool fixed_array<T>::iterator::operator==(const self_type &rhs) const {
+        return __ptr == rhs.__ptr;
+    }
+
+    template<typename T>
+    bool fixed_array<T>::iterator::operator!=(const self_type &rhs) const {
+        return __ptr != rhs.__ptr;
+    }
+
+
+    template<typename T>
+    fixed_array<T>::fixed_array(fixed_array::size_type size) : __data(new T[size]), __size(size) {
+        for(int i = 0; i < size; ++i)
+            __data[i] = T();
+    }
+
+    template<typename T>
+    fixed_array<T>::fixed_array(std::initializer_list<T> list) : __data(new T[(int)list.size()]), __size((int)list.size()){
+        int i = 0;
+        for(auto ptr = list.begin(); ptr != list.end(); ++ptr, ++i)
+            __data[i] = *ptr;
+    }
+
+    template<typename T>
+    fixed_array<T>::~fixed_array() {
+        delete [] __data;
+    }
+
+    template<typename T>
+    typename fixed_array<T>::size_type fixed_array<T>::size() const {
+        return __size;
+    }
+
+    template<typename T>
+    T &fixed_array<T>::operator[](typename fixed_array<T>::size_type index) {
+        return __data[index];
+    }
+
+    template<typename T>
+    const T &fixed_array<T>::operator[](typename fixed_array<T>::size_type index) const {
+        return __data[index];
+    }
+
+    template<typename T>
+    typename fixed_array<T>::iterator fixed_array<T>::begin() {
+        return iterator(__data);
+    }
+
+    template<typename T>
+    typename fixed_array<T>::iterator fixed_array<T>::end() {
+        return iterator(__data + __size);
+    }
+
+    template<typename T>
+    typename fixed_array<T>::const_iterator fixed_array<T>::begin() const {
+        return const_iterator(__data);
+    }
+
+    template<typename T>
+    typename fixed_array<T>::const_iterator fixed_array<T>::end() const {
+        return const_iterator(__data + __size);
+    }
 }
 
 #endif //UCD_CSCI2312_PA5_IMPL_CUSTOM_ITERATOR_H
